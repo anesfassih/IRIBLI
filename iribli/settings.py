@@ -25,7 +25,7 @@ SECRET_KEY = 'vvy6^#!t0r$0@0#&o5jaf@*g45hxngesmw)e9^tsmizasm6#a*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["146.59.169.77"]
 
 
 # Application definition

@@ -288,3 +288,10 @@ class Transition(models.Model):
 
     def __str__(self):
         return str(self.from_state) + " -> " + str(self.to_state)
+    
+
+class MissingPos(models.Model):
+
+    word = models.CharField(verbose_name="Mot à POSER !", max_length=30)
+    missing_date = models.DateTimeField(verbose_name="Date de la problématique", auto_now=True)
+    fixed_date = models.DateTimeField(verbose_name="Date de maintenance", null=True)

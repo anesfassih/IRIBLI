@@ -7,5 +7,6 @@ urlpatterns = [
     path('process', views.process, name='process'),
     url(r'^validate/(?P<trans>.+)/$', views.validate, name='validate'),
     url(r'^feed/(?P<sent_text>.+)/(?P<actual_state>.+)/(?P<word_position>.+)/$', views.feed, name='feed'),
+    url(r'^missing_pos/(?P<missing_word>.+)/$', views.missing_pos, name='missing_pos'),
     # path('feed/<int:actual_state>/<int:word_position>/<str:sent_text>', views.feed, name='feed')
 ]

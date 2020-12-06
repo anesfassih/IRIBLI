@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block 'content' %}
-    <h1 class="cover-heading">إعْـــربْـلـي.</h1>
+    <h1 dir="rtl" lang='AR' class="cover-heading">إعْـــربْـلـي.</h1>
     <div class="div_results">
         <table dir="rtl" lang='AR' id="results" class="table table-bordered">
             <thead>
@@ -39,8 +39,8 @@
         </table>
     <p dir="rtl" lang='AR'>
         بعد اللإطلاع على النتائج و لمنح البرنامج إمكانية التعلم من الأجوبة الصحيحة :
-        يُطلب من المستعمل الإختيار ما بين الإقتراحات المطروحة.
-        إن لم يتم طرح اللإعراب الصحيح : <br>
+        يُطلب من المستعمل الإختيار ما بين الإقتراحات المطروحة.<br>
+        إن لم يتم طرح اللإعراب الصحيح : 
         <a href="{% url 'feed' text_phrase start_state.id 0 %}">يرجى الضغط هنا لإدخال الإعراب الصحيح.</a>
     </p>
     </div>

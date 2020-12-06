@@ -71,6 +71,13 @@ class TransitionAdmin(admin.ModelAdmin):
     search_fields = ('rule_pack', 'from_state', 'to_state', 'word_type', 'word_subtype', 'halat_al_irab')
 
 
+class MissingPosAdmin(admin.ModelAdmin):
+    list_display = ('missing_date', 'word', 'fixed_date')
+    list_filter = ('fixed_date', )
+    ordering = ('fixed_date', 'missing_date', 'word')
+    search_fields = ('missing_date', 'word', 'fixed_date')
+
+
 admin.site.register(Suffixe, SuffixeAdmin)
 admin.site.register(Prefixe, PrefixeAdmin)
 admin.site.register(ProperNoun, ProperNounAdmin)
@@ -81,3 +88,4 @@ admin.site.register(Pattern, PatternAdmin)
 admin.site.register(RulePack, RulePackAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Transition, TransitionAdmin)
+admin.site.register(MissingPos, MissingPosAdmin)

@@ -1,16 +1,16 @@
 {% extends 'index.html' %}
 
 {% block 'content' %}
-    <h1 class="cover-heading">إعْـــربْـلـي.</h1>
-            <p class="lead">يُرْجَى تَشْكيلُ الجُمْلَة.</p>
+    <h1 dir="rtl" lang='AR' class="cover-heading">إعْـــربْـلـي.</h1>
+            <p dir="rtl" lang='AR' class="lead">يُرْجَى تَشْكيلُ الجُمْلَة.</p>
         
-        <form method="POST" action="{% url 'process' %}" style="margin-bottom: auto; margin-top: auto;" id="sent_in">
+        <form name="myForm" method="POST" action="{% url 'process' %}" onsubmit="return validateForm()" required style="margin-bottom: auto; margin-top: auto;" id="sent_in">
             {% csrf_token %}
             <div class="row">
             <div class="col-lg-12">
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">إعْربْ</button>
+                        <input class="btn btn-default" type="submit" value="إعْربْ"></button>
                     </span>
                 <input dir="rtl" lang='AR' type="text" class="form-control" name="sent_text" placeholder="الجملة المراد إعرابها...">
                 </div><!-- /input-group -->
@@ -64,5 +64,12 @@
 {% block 'js' %}
     <script>
         document.querySelector('#nav_home').classList += ' active'
+        function validateForm() {
+        var x = document.forms["myForm"]["sent_text"].value;
+        if (x == "") {
+            alert("يرجى إدخال جملة.");
+            return false;
+        }
+        }
     </script>
 {% endblock %}

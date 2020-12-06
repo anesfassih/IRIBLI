@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block 'content' %}
+    <h1 class="cover-heading">إعْـــربْـلـي.</h1>
+    <div class="div_results">
+        <table dir="rtl" lang='AR' id="results" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">الإقتراح</th>
+                    <th style="text-align: center;">الكلمة</th>
+                    <th style="text-align: center;">إعرابها</th>
+                    <th style="text-align: center;">إختيار</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for combination in accepted %}
+                {% for irab in combination.proposition %}
+                    <tr>
+                        {% ifchanged %}<td rowspan={{ phrase|length }} style="text-align: center;">{{ forloop.parentloop.counter }}</td>{% endifchanged %}
+                        <td style="text-align: center;">{{ irab.word }}</td>
+                        <td style="text-align: right;">{{ irab.irab }}</td>
+                        {% ifchanged %}
+                            <td rowspan={{ phrase|length }} style="text-align: center;">
+                                <a href="{% url 'validate' combination.trans|join:"," %}"><i style="color:green" class="fas fa-check-circle fa-2x"></i><a/>
+                            </td>
+                        {% endifchanged %}
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="text-align: center;">الإقتراح</th>
+                    <th style="text-align: center;">الكلمة</th>
+                    <th style="text-align: center;">إعرابها</th>
+                    <th style="text-align: center;">إختيار</th>
+                </tr>
+            </tfoot>
+        </table>
+    <p dir="rtl" lang='AR'>
+        بعد اللإطلاع على النتائج و لمنح البرنامج إمكانية التعلم من الأجوبة الصحيحة :
+        يُطلب من المستعمل الإختيار ما بين الإقتراحات المطروحة.
+        إن لم يتم طرح اللإعراب الصحيح : <br>
+        <a href="{% url 'feed' text_phrase start_state.id 0 %}">يرجى الضغط هنا لإدخال الإعراب الصحيح.</a>
+    </p>
+    </div>
+    <br><br>
+{% endblock %}
+{% block 'js' %}
+    <script>
+        document.querySelector('#nav_results').classList += ' active'
+    </script>
+{% endblock %}

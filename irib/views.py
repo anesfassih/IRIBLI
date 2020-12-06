@@ -63,7 +63,7 @@ def home(request):
 
 def process(request):
     RP = RulePack.objects.get(active=True)
-    start_state = State.objects.get(rule_pack = RP, label="START")
+    start_state = State.objects.get(rule_pack=RP, label="START")
     if request.POST:
         try:
             text_phrase = request.POST['sent_text']
@@ -128,28 +128,35 @@ def feed(request, sent_text, actual_state, word_position):
     potential_states = []
 
     tmp_pos = pos_word(phrase[word_position])
+    if not tmp_pos:
+        MissingPos.objects.create(word=phrase[word_position])
+        return redirect("missing_pos", phrase[word_position])
 
     if form.is_valid():
         if form.cleaned_data['state']: # Etat éxistant ------------------------------------
-            # form.cleaned_data['state'].prev_transitions.get() ### Incrémenter le poids de la transition...
+            for t in state.next_transitions.filter(to_state=form.cleaned_data['state']): ### Incrémenter le poids de la transition...
+                t.occ += 1
+                t.save()
             if word_position == len(phrase) - 1:
                 form.cleaned_data['state'].is_end = True
                 form.cleaned_data['state'].save()
                 return redirect('home')
             return redirect('feed', sent_text=sent_text, actual_state=form.cleaned_data['state'].id, word_position=word_position+1)
-        else:
-            if form.cleaned_data['pos'] != -1 and form.cleaned_data['label']: # Etat non éxistant et informations de l'irab saisis --
-                is_end = False; is_start=False
-                if word_position == len(phrase) - 1:
-                    is_end = True
-                if word_position == 0:
-                    is_start = True
-                s = RP.add_state(label=form.cleaned_data['label'], is_start=is_start, is_end=is_end)
-                t = RP.add_transition(from_state=state, to_state=s, **tmp_pos[int(form.cleaned_data['pos'])])
-                if is_end:
-                    return redirect('home')
-                else:
-                    return redirect('feed', sent_text=sent_text, actual_state=s.id, word_position=word_position+1)
+        elif form.cleaned_data['pos'] != -1 and form.cleaned_data['label']: # Etat non éxistant et informations de l'irab saisis --
+            is_end = False; is_start=False
+            if word_position == len(phrase) - 1:
+                is_end = True
+            if word_position == 0:
+                is_start = True
+            s = RP.add_state(label=form.cleaned_data['label'], is_start=is_start, is_end=is_end)
+            t = RP.add_transition(from_state=state, to_state=s, **tmp_pos[int(form.cleaned_data['pos'])])
+            if is_end:
+                return redirect('home')
+            else:
+                return redirect('feed', sent_text=sent_text, actual_state=s.id, word_position=word_position+1)
+        else: # Si pas de transition ni de P.O.S. possible pour le mot actuel : On s'éxcuse auprés de l'utilisateur et on stocke le mot qui pose probléme pour essayer de le régler plutard.
+            MissingPos.objects.create(word=phrase[word_position])
+            return redirect("missing_pos", phrase[word_position])
     
     for pos in tmp_pos:
         trans = state.next_transitions.filter(**pos)
@@ -160,8 +167,13 @@ def feed(request, sent_text, actual_state, word_position):
         POS_CHOICES.append(
             (
                 i,
-                " - ".join(
-                        [TRANSLATE[key] + " : "+ TRANSLATE[str(value)] for key, value in p.items()]
+                " | ".join(
+                        [
+                            TRANSLATE[key] + " : "+ TRANSLATE[str(value)] 
+                            if key in TRANSLATE.keys() and str(value) in TRANSLATE.keys()
+                            else key + " : "+ str(value)
+                            for key, value in p.items()
+                        ]
                     )
             )
         )
@@ -171,3 +183,7 @@ def feed(request, sent_text, actual_state, word_position):
         
     
     return render(request, 'irib/feed.html', locals())
+
+
+def missing_pos(request, missing_word):
+    return render(request, 'irib/missing_pos.html', locals())

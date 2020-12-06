@@ -229,13 +229,13 @@ def pos_word(word):
                 muaaraf = False
             combs.append(
                 # {'Préfixe': prefixe, 'word_subtype': comb['tw_object'].ttype, 'word_type': 'tool', 'Suffixe': suffixe, 'is_muaaraf': muaaraf})
-                {'word_subtype': comb['tw_object'].ttype, 'word_type': 'tool', 'is_muaaraf': muaaraf})
+                {'word_type': 'tool', 'word_subtype': comb['tw_object'].ttype, 'is_muaaraf': muaaraf})
     if mot_except(word):
         for comb in mot_except(word):
             # combs.append({'Préfixe': comb.prefixe, 'word_subtype': comb.etype, 'word_type': 'except', 'Suffixe': comb.suffixe,
             #               'halat_al_irab': halat_al_irab(comb.stem), 'is_muaaraf': True})
-            combs.append({'word_subtype': comb.etype, 'word_type': 'except',
-                          'halat_al_irab': halat_al_irab(comb.stem), 'is_muaaraf': True})
+            combs.append({'word_type': 'except', 'word_subtype': comb.etype, 
+                          'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb.stem)})
     if nom_propre(word):
         for comb in nom_propre(word):
             if comb['Préfixe'] != '':
@@ -246,8 +246,8 @@ def pos_word(word):
                 suffixe = comb['Suffixe']
             else:
                 suffixe = ''
-            combs.append({'word_subtype': comb['pn_object'].ptype, 'word_type': 'prop',
-                          'halat_al_irab': halat_al_irab(comb['Base']), 'is_muaaraf': True})
+            combs.append({'word_type': 'prop', 'word_subtype': comb['pn_object'].ptype, 
+                          'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb['Base'])})
 
     for comb in attach_racine(attach_sheme(decoupage(word))):
         muaaraf = False
@@ -261,7 +261,7 @@ def pos_word(word):
             sufixe = comb['Suffixe']
         else:
             sufixe = ''
-        tmp = {'word_subtype': comb['type'], 'word_type': comb['stype'], 'is_muaaraf': muaaraf}
+        tmp = {'word_type': comb['stype'], 'word_subtype': comb['type'], 'is_muaaraf': muaaraf}
         if halat_al_irab(comb['Base']):
             tmp['halat_al_irab'] = halat_al_irab(comb['Base'])
         if tmp not in combs:

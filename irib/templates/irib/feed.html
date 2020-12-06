@@ -2,21 +2,22 @@
 
 {% block 'content' %}
     {% load crispy_forms_tags %}
-    <p>
+    <p dir="rtl" lang='AR'>
     يرجى إختيار المعلومات الصحيحة لكل كلمة و إدخال الإعراب المناسب.<br>
     ستسجل المعلومات و سيتم طرحها في الحالات المماثلة في المستقبل.<br>
     شكراً !
     </p>
-    <p>الجملة : 
+    <p dir="rtl" lang='AR'>الجملة : 
         {% for w in phrase %}
             {% if forloop.counter0 == word_position %} <U>{{w}}</U> 
             {% else %} {{w}}
             {% endif %}
-        {% endfor %}
+        {% endfor %}.
     </p>
     <div>
     <form dir="rtl" lang='ar' method="POST", action="{% url 'feed' sent_text actual_state word_position %}">
         {% csrf_token %}
+        <p>{{ form.non_field_errors }}</p><br><br>
         {% crispy form form.helper %}
     </form>
     </div>

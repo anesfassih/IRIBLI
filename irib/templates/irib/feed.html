@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block 'content' %}
+    {% load crispy_forms_tags %}
+    <p>
+    يرجى إختيار المعلومات الصحيحة لكل كلمة و إدخال الإعراب المناسب.<br>
+    ستسجل المعلومات و سيتم طرحها في الحالات المماثلة في المستقبل.<br>
+    شكراً !
+    </p>
+    <p>الجملة : 
+        {% for w in phrase %}
+            {% if forloop.counter0 == word_position %} <U>{{w}}</U> 
+            {% else %} {{w}}
+            {% endif %}
+        {% endfor %}
+    </p>
+    <div>
+    <form dir="rtl" lang='ar' method="POST", action="{% url 'feed' sent_text actual_state word_position %}">
+        {% csrf_token %}
+        {% crispy form form.helper %}
+    </form>
+    </div>
+{% endblock %}
+{% block 'js' %}
+    <script>
+        document.querySelector('#nav_feed').classList += ' active'
+        var state = document.querySelector('#id_state');
+        var pos = document.querySelector('#id_pos');
+        var label = document.querySelector('#id_label');
+
+        state.addEventListener('change', function(e){
+            if(state.value ){
+                $('.pos').hide();
+                $('.label').hide();
+            }
+            else{
+                $('.pos').show();
+                $('.label').show();
+            }
+    })
+
+
+    </script>
+{% endblock 'js' %}

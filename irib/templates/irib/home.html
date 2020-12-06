@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% block 'content' %}
+    <h1 class="cover-heading">إعْـــربْـلـي.</h1>
+            <p class="lead">يُرْجَى تَشْكيلُ الجُمْلَة.</p>
+        
+        <form method="POST" action="{% url 'process' %}" style="margin-bottom: auto; margin-top: auto;" id="sent_in">
+            {% csrf_token %}
+            <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">إعْربْ</button>
+                    </span>
+                <input dir="rtl" lang='AR' type="text" class="form-control" name="sent_text" placeholder="الجملة المراد إعرابها...">
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+            </div>
+            
+        </form>
+    
+    {% block 'results' %}
+    {% if proposition %}
+    <div class="div_results h-75">
+        <table id="results" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">الإقتراح</th>
+                    <th style="text-align: center;">الكلمة</th>
+                    <th style="text-align: center;">إعرابها</th>
+                    <th style="text-align: center;">إختيار</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for combination in accepted %}
+                {% for irab in combination.proposition %}
+                    <tr>
+                        {% ifchanged %}<td rowspan={{ phrase|length }} style="text-align: center;">{{ forloop.parentloop.counter }}</td>{% endifchanged %}
+                        <td style="text-align: center;">{{ irab.word }}</td>
+                        <td style="text-align: right;">{{ irab.irab }}</td>
+                        {% ifchanged %}
+                            <td rowspan={{ phrase|length }} style="text-align: center;">
+                                <a href="{% url 'validate' combination.trans|join:"," %}"><i style="color:green" class="fas fa-check-circle fa-2x"></i><a/>
+                            </td>
+                        {% endifchanged %}
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="text-align: center;">الإقتراح</th>
+                    <th style="text-align: center;">الكلمة</th>
+                    <th style="text-align: center;">إعرابها</th>
+                    <th style="text-align: center;">إختيار</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <br><br>
+    {% endif %}
+    {% endblock %}
+{% endblock %}
+{% block 'js' %}
+    <script>
+        document.querySelector('#nav_home').classList += ' active'
+    </script>
+{% endblock %}

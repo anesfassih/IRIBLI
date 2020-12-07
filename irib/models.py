@@ -272,8 +272,10 @@ class Transition(models.Model):
     from_state = models.ForeignKey(State, verbose_name="Etat de provenance", related_name="next_transitions", on_delete=models.CASCADE, null=True, blank=True)
     to_state = models.ForeignKey(State, verbose_name="Etat de destination", related_name="prev_transitions", on_delete=models.CASCADE)
 
+    prefixe = models.CharField(verbose_name="بادئة الكلمة", max_length=10, null=True)
     word_type = models.CharField(verbose_name="نوع الكلمة", max_length=40, choices=WORD_TYPES, null=True)
     word_subtype = models.CharField(verbose_name="تكمبل نوع الكلمة", max_length=40, null=True)
+    suffixe = models.CharField(verbose_name="لاحقة الكلمة", max_length=10, null=True)
     halat_al_irab = models.CharField(verbose_name="حالة الإعراب", max_length=20, choices=HALAT_AL_IRAB, null=True)
     is_muaaraf = models.BooleanField(verbose_name="معرف", null=True)
 

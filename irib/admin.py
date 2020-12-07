@@ -65,10 +65,10 @@ class StateAdmin(admin.ModelAdmin):
 
 
 class TransitionAdmin(admin.ModelAdmin):
-    list_display = ('rule_pack', 'occ', 'from_state', 'to_state', 'word_type', 'word_subtype', 'halat_al_irab', 'is_muaaraf', 'active')
-    list_filter = ('rule_pack', 'active', 'word_type', 'word_subtype', 'halat_al_irab', 'is_muaaraf', 'from_state', 'to_state')
+    list_display = ('rule_pack', 'occ', 'from_state', 'to_state', 'prefixe', 'word_type', 'word_subtype', 'suffixe', 'halat_al_irab', 'is_muaaraf', 'active')
+    list_filter = ('rule_pack', 'active', 'prefixe', 'word_type', 'word_subtype', 'suffixe', 'halat_al_irab', 'is_muaaraf', 'from_state', 'to_state')
     ordering = ('rule_pack', 'active', 'occ', 'from_state', 'to_state')
-    search_fields = ('rule_pack', 'from_state', 'to_state', 'word_type', 'word_subtype', 'halat_al_irab')
+    search_fields = ('rule_pack', 'from_state', 'to_state', 'prefixe', 'word_type', 'word_subtype', 'suffixe', 'halat_al_irab')
 
 
 class MissingPosAdmin(admin.ModelAdmin):

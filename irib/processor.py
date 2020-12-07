@@ -5,13 +5,13 @@ import copy
 import itertools
 
 
-def is_muaaraf(pos):
-    """ Input : [prefixe, type, stype, suffixe] """
-    if pos['stype'] in ['adjectival', 'nominal'] and pos['prefixe'] == 'التعريف' or \
-            pos['stype'] in ['except', 'prop'] or \
-            pos['type'] == 'اسم إشارة':
-        return True
-    return False
+# def is_muaaraf(pos):
+#     """ Input : [prefixe, type, stype, suffixe] """
+#     if pos['stype'] in ['adjectival', 'nominal'] and 'التعريف' in pos['prefixe'] or \
+#             pos['stype'] in ['except', 'prop'] or \
+#             pos['type'] == 'اسم إشارة':
+#         return True
+#     return False
 
 
 def halat_al_irab(word):
@@ -61,7 +61,7 @@ def decoupage(word):
         for sf in suffixes:
             # Validation criteria
             if pr != "" and sf != "":
-                if (len(word_unvocalized) - len(pr.unvoweled_form) - len(sf.unvoweled_form)) < 2 or \
+                if (len(word_unvocalized) - len(pr.unvoweled_form) - len(sf.unvoweled_form)) <= 2 or \
                     (len(word_unvocalized) - len(pr.unvoweled_form) - len(sf.unvoweled_form)) > 9:
                     continue
                 if ((pr.classe[0] == 'N' and sf.classe[0] == 'V') or
@@ -216,11 +216,11 @@ def pos_word(word):
         for comb in mot_outil(word):
             if comb['Préfixe'] != '':
                 print(comb['Préfixe'])
-                prefixe = comb['Préfixe']
+                prefixe = comb['Préfixe'].description
             else:
                 prefixe = ''
             if comb['Suffixe'] != '':
-                suffixe = comb['Suffixe']
+                suffixe = comb['Suffixe'].description
             else:
                 suffixe = ''
             if comb['tw_object'].ttype == 'اسم إشارة':
@@ -228,40 +228,44 @@ def pos_word(word):
             else:
                 muaaraf = False
             combs.append(
-                # {'Préfixe': prefixe, 'word_subtype': comb['tw_object'].ttype, 'word_type': 'tool', 'Suffixe': suffixe, 'is_muaaraf': muaaraf})
-                {'word_type': 'tool', 'word_subtype': comb['tw_object'].ttype, 'is_muaaraf': muaaraf})
+                {'prefixe': prefixe, 'word_type': 'tool', 'word_subtype': comb['tw_object'].ttype, 'suffixe': suffixe, 'is_muaaraf': muaaraf})
+                # {'word_type': 'tool', 'word_subtype': comb['tw_object'].ttype, 'is_muaaraf': muaaraf})
     if mot_except(word):
         for comb in mot_except(word):
-            # combs.append({'Préfixe': comb.prefixe, 'word_subtype': comb.etype, 'word_type': 'except', 'Suffixe': comb.suffixe,
-            #               'halat_al_irab': halat_al_irab(comb.stem), 'is_muaaraf': True})
-            combs.append({'word_type': 'except', 'word_subtype': comb.etype, 
+            combs.append({'prefixe': comb.prefixe, 'word_type': 'except', 'word_subtype': comb.etype, 'suffixe': comb.suffixe,
                           'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb.stem)})
+            # combs.append({'word_type': 'except', 'word_subtype': comb.etype, 
+            #               'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb.stem)})
     if nom_propre(word):
         for comb in nom_propre(word):
             if comb['Préfixe'] != '':
-                prefixe = comb['Préfixe']
+                prefixe = comb['Préfixe'].description
             else:
                 prefixe = ''
             if comb['Suffixe'] != '':
-                suffixe = comb['Suffixe']
+                suffixe = comb['Suffixe'].description
             else:
                 suffixe = ''
-            combs.append({'word_type': 'prop', 'word_subtype': comb['pn_object'].ptype, 
+            combs.append({'prefixe': prefixe, 'word_type': 'prop', 'word_subtype': comb['pn_object'].ptype, 'suffixe': suffixe,
                           'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb['Base'])})
+            # combs.append({'word_type': 'prop', 'word_subtype': comb['pn_object'].ptype, 
+            #               'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb['Base'])})
 
+    
     for comb in attach_racine(attach_sheme(decoupage(word))):
         muaaraf = False
         if comb['Préfixe'] != '':
-            prefixe = comb['Préfixe']
-            if prefixe.description == 'التعريف':
+            prefixe = comb['Préfixe'].description
+            if 'التعريف' in prefixe:
                 muaaraf = True
         else:
             prefixe = ''
         if comb['Suffixe'] != '':
-            sufixe = comb['Suffixe']
+            suffixe = comb['Suffixe'].description
         else:
-            sufixe = ''
-        tmp = {'word_type': comb['stype'], 'word_subtype': comb['type'], 'is_muaaraf': muaaraf}
+            suffixe = ''
+        tmp = {'prefixe': prefixe, 'word_type': comb['stype'], 'word_subtype': comb['type'], 'suffixe': suffixe, 'is_muaaraf': muaaraf}
+        # tmp = {'word_type': comb['stype'], 'word_subtype': comb['type'], 'is_muaaraf': muaaraf}
         if halat_al_irab(comb['Base']):
             tmp['halat_al_irab'] = halat_al_irab(comb['Base'])
         if tmp not in combs:

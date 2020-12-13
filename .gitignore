@@ -99,4 +99,4 @@ GitHub.sublime-settings
 templates/base.html
 static/css/base_style.css
 static/js/front_handler.js
-
+.ionide/*

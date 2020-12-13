@@ -3,6 +3,7 @@ from .processor import *
 from .rule_manager import *
 from .models import RulePack
 from .forms import AddRule
+import string
 
 TRANSLATE = {
     "nominal": "إسم",
@@ -66,8 +67,8 @@ def process(request):
     start_state = State.objects.get(rule_pack=RP, label="START")
     if request.POST:
         try:
-            text_phrase = request.POST['sent_text']
-            phrase = araby.tokenize(text_phrase)
+            text_phrase = request.POST['sent_text'].translate(str.maketrans('', '', string.punctuation))
+            phrase = araby.tokenize(text_phrase, conditions=araby.is_arabicrange)
             posed_phrase = []
             posed_phrase_list = []
             accepted = []
@@ -97,7 +98,7 @@ def process(request):
                         if {'proposition': proposition, 'trans': trans} not in accepted:
                             accepted.append({'proposition': proposition, 'trans': trans})
             if not accepted:
-                return redirect('feed', sent_text=request.POST['sent_text'], actual_state=start_state.id, word_position=0)
+                return redirect('feed', sent_text=text_phrase, actual_state=start_state.id, word_position=0)
                 # accepted += RP.r_parser(sent)
 
         except RulePack.DoesNotExist:

@@ -253,6 +253,7 @@ def pos_word(word):
 
     
     for comb in attach_racine(attach_sheme(decoupage(word))):
+        print(decoupage(word))
         muaaraf = False
         if comb['Préfixe'] != '':
             prefixe = comb['Préfixe'].description

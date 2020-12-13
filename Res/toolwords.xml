@@ -12,9 +12,9 @@
 			</toolword>
 			<toolword unvoweledform="أن" voweledform="أَنْ" type="حَرف مصدريّ ناصِب للمُضارِع أو حَرف توكِيد أو تفسير أو زائِد" prefixeclass="C1C2C4" suffixeclass="C1" priority="301">
 			</toolword>
-			<toolword unvoweledform="إن" voweledform="إِنَّ" type="حَرف توكيد ناسِخ" prefixeclass="C1C2C3C4N4" suffixeclass="C1C2C3V1V2" priority="301">
+			<toolword unvoweledform="إن" voweledform="إِنَّ" type="حَرف توكيد ناسِخ بادئ" prefixeclass="C1C2C3C4N4" suffixeclass="C1C2C3V1V2" priority="301">
 			</toolword>
-			<toolword unvoweledform="أن" voweledform="أَنَّ" type="حَرف توكيد ناسِخ" prefixeclass="C1C2C3C4N4" suffixeclass="C1C2C3V1V2" priority="301">
+			<toolword unvoweledform="أن" voweledform="أَنَّ" type="حَرف توكيد ناسِخ غير بادئ" prefixeclass="C1C2C3C4N4" suffixeclass="C1C2C3V1V2" priority="301">
 			</toolword>
 			<toolword unvoweledform="أم" voweledform="أَمْ" type="حَرف عطف" prefixeclass="C1" suffixeclass="C1" priority="301">
 			</toolword>

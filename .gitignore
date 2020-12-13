@@ -92,7 +92,7 @@ GitHub.sublime-settings
 .history
 
 # Database stuff
-# *.sqlite3
+*.sqlite3
 !/migrations/
 
 # Custom Ignoring Files

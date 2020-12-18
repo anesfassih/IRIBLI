@@ -297,3 +297,10 @@ class MissingPos(models.Model):
     word = models.CharField(verbose_name="Mot à POSER !", max_length=30)
     missing_date = models.DateTimeField(verbose_name="Date de la problématique", auto_now=True)
     fixed_date = models.DateTimeField(verbose_name="Date de maintenance", null=True)
+
+    class Meta:
+        verbose_name = "Mot non reconnu"
+        verbose_name_plural = "Mots non reconnus"
+
+    def __str__(self):
+        return self.word

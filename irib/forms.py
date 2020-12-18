@@ -10,7 +10,7 @@ class AddRule(forms.Form):
         help_text="إن لم يوجد إعراب مناسب، يرجى ترك الإختيار فارغاً و إدخال الإعراب يدوياً مع إختيار معلومات طرف الكلام.", 
         required=False, queryset=State.objects.all(), widget=forms.Select(attrs={'dir': "rtl", 'lang': 'AR', 'style': 'width: 100%;'}))
     pos = forms.CharField(label="معلومات طرف الكلام :", required=False, widget=forms.Select(choices=[('', '-------')], attrs={'dir': "rtl", 'lang': 'AR', 'style': 'width: 100%;'}))
-    label = forms.CharField(label='إدخال الإعراب :', max_length = 100, required=False, widget=forms.TextInput(attrs={'dir': "rtl", 'lang': 'AR', 'style': 'width: 100%;'}))
+    label = forms.CharField(label='إدخال الإعراب :', max_length = 250, required=False, widget=forms.TextInput(attrs={'dir': "rtl", 'lang': 'AR', 'style': 'width: 100%;'}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

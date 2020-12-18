@@ -251,9 +251,9 @@ def pos_word(word):
             # combs.append({'word_type': 'prop', 'word_subtype': comb['pn_object'].ptype, 
             #               'is_muaaraf': True, 'halat_al_irab': halat_al_irab(comb['Base'])})
 
-    
+
     for comb in attach_racine(attach_sheme(decoupage(word))):
-        print(decoupage(word))
+        # print(decoupage(word))
         muaaraf = False
         if comb['Préfixe'] != '':
             prefixe = comb['Préfixe'].description

@@ -24,22 +24,27 @@
 {% endblock %}
 {% block 'js' %}
     <script>
-        document.querySelector('#nav_feed').classList += ' active'
+    
+        document.querySelector('#nav_feed').classList += ' active';
+
         var state = document.querySelector('#id_state');
-        var pos = document.querySelector('#id_pos');
-        var label = document.querySelector('#id_label');
+        if(state.size == 0){
+            $('.state').hide();
+        }else{
+            var pos = document.querySelector('#id_pos');
+            var label = document.querySelector('#id_label');
 
-        state.addEventListener('change', function(e){
-            if(state.value ){
-                $('.pos').hide();
-                $('.label').hide();
-            }
-            else{
-                $('.pos').show();
-                $('.label').show();
-            }
-    })
-
+            state.addEventListener('change', function(e){
+                if(state.value ){
+                    $('.pos').hide();
+                    $('.label').hide();
+                }
+                else{
+                    $('.pos').show();
+                    $('.label').show();
+                }
+            });
+        }
 
     </script>
 {% endblock 'js' %}

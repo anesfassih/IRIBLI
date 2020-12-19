@@ -101,3 +101,4 @@ static/css/base_style.css
 static/js/front_handler.js
 .ionide/*
 nohup.out
+iribli/secrets.py

@@ -69,40 +69,44 @@ def process(request):
         try:
             text_phrase = request.POST['sent_text'].translate(str.maketrans('', '', string.punctuation))
             phrase = araby.tokenize(text_phrase, conditions=araby.is_arabicrange)
+            txt_phrase = " ".join(phrase)
             posed_phrase = []
             posed_phrase_list = []
             accepted = []
             for w in phrase:
+                print(w)
                 pos = pos_word(w)
                 posed_phrase.append({'word': w, 'pos': pos})
                 posed_phrase_list.append(pos)
             sent_combinations = to_combs(posed_phrase_list)
             for sent in sent_combinations:
-                tmp = RP.r_parser(sent)
+                tmp = RP.r_parser(sent, actual_state=start_state)
                 proposition = []
                 trans = []
                 for t in tmp:
                     # print(t)
-                    for i, irab in enumerate(t[1:]):
-                        proposition.append({
-                            'word': phrase[i], 
-                            'irab': irab, 
-                            'trans': RP.get_transition(
-                                from_state=t[i], 
-                                to_state=t[i+1], **sent[i])
-                            })
-                        trans.append(RP.get_transition(
-                                from_state=t[i], 
-                                to_state=t[i+1], **sent[i]).id)
+                    if t:
+                        for i, irab in enumerate(t[1:]):
+                            proposition.append({
+                                'word': phrase[i], 
+                                'irab': irab,
+                                'trans': RP.get_transition(
+                                    from_state=t[i], 
+                                    to_state=t[i+1], **sent[i])
+                                })
+                            trans.append(RP.get_transition(
+                                    from_state=t[i], 
+                                    to_state=t[i+1], **sent[i]).id)
                     if proposition:
                         if {'proposition': proposition, 'trans': trans} not in accepted:
                             accepted.append({'proposition': proposition, 'trans': trans})
             if not accepted:
-                return redirect('feed', sent_text=text_phrase, actual_state=start_state.id, word_position=0)
+                return redirect('feed', sent_text=" ".join(phrase), actual_state=start_state.id, word_position=0)
                 # accepted += RP.r_parser(sent)
 
         except RulePack.DoesNotExist:
-            return redirect("activate_rpack")
+            print("No RPACK !! Handle This !")
+            # return redirect("activate_rpack")
 
     return render(request, 'irib/process.html', locals())
 
@@ -131,7 +135,7 @@ def feed(request, sent_text, actual_state, word_position):
     tmp_pos = pos_word(phrase[word_position])
     if not tmp_pos:
         MissingPos.objects.create(word=phrase[word_position])
-        return redirect("missing_pos", phrase[word_position])
+        return redirect("missing_pos", missing_word=phrase[word_position])
 
     if form.is_valid():
         if form.cleaned_data['state']: # Etat éxistant ------------------------------------
@@ -187,4 +191,8 @@ def feed(request, sent_text, actual_state, word_position):
 
 
 def missing_pos(request, missing_word):
+    out_dec = decoupage(missing_word)
+    out_sch = attach_sheme(out_dec)
+    out_rcn = attach_racine(out_sch)
+    error_msg = "Découpage : "+str(out_dec)+" --- Recherche du schème : \n"+str(out_sch)+" --- Recherche de la racine : \n"+str(out_rcn)+"\n"
     return render(request, 'irib/missing_pos.html', locals())

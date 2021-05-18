@@ -16,6 +16,7 @@ import itertools
 
 def halat_al_irab(word):
     # المثنى وما يلحق به : يرفع بالألف ، وينصب ويجر بالياء
+    # Maby adding affixes for dual and testing with alif or ya' should be beter...
     if araby.strip_diacritics(word)[-2:] == 'ان':
         return 'raf3'
     elif araby.strip_diacritics(word)[-2:] == 'ين':

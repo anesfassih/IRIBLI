@@ -221,32 +221,32 @@ class RulePack(models.Model):
             sent_transitions doit étre une liste de simples transitions, pas de doublons.
         """
         out = []
-        if not actual_state:
-            actual_states = self.get_start_states()
-            for s in actual_states:
-                tmp = self.r_parser(sent_transitions, actual_state=s)
-                # if tmp :
-                for suit in tmp:
-                    if suit:
-                        out.append(suit)
-        else:
-            if len(sent_transitions) == 0:
-                if actual_state.is_end:
-                    return actual_state
+        # if not actual_state:
+        #     actual_states = self.get_start_states()
+        #     for s in actual_states:
+        #         tmp = self.r_parser(sent_transitions, actual_state=s)
+        #         # if tmp :
+        #         for suit in tmp:
+        #             if suit:
+        #                 out.append(suit)
+        # else:
+        if len(sent_transitions) == 0:
+            if actual_state.is_end:
+                return actual_state
+            else:
+                return None
+        nexts = self.get_next_states(actual_state, **sent_transitions[0])
+        for n in nexts:
+            rest = self.r_parser(sent_transitions[1:], actual_state=n)
+            if rest:
+                if type(rest) == list:
+                    for suit in rest:
+                        if suit:
+                            out.append([actual_state] + suit)
                 else:
-                    return None
-            nexts = self.get_next_states(actual_state, **sent_transitions[0])
-            for n in nexts:
-                rest = self.r_parser(sent_transitions[1:], actual_state=n)
-                if rest:
-                    if type(rest) == list:
-                        for suit in rest:
-                            if suit:
-                                out.append([actual_state] + suit)
-                    else:
-                        out.append([actual_state, rest])
-                else:
-                    out.append(None)
+                    out.append([actual_state, rest])
+            else:
+                out.append(None)
         return out
 
 

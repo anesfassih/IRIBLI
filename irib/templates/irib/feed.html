@@ -28,12 +28,9 @@
         document.querySelector('#nav_feed').classList += ' active';
 
         var state = document.querySelector('#id_state');
-        if(state.size == 0){
+        if(state.length == 0){
             $('.state').hide();
         }else{
-            $('.state').show();
-            var pos = document.querySelector('#id_pos');
-            var label = document.querySelector('#id_label');
 
             state.addEventListener('change', function(e){
                 if(state.value ){
